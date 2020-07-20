@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,16 +18,14 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {OrderList} from './components/orders';
-
-declare const global: {HermesInternal: null | {}};
+import {OrderScreen} from '@app/screens';
 
 const App = () => {
   return (
     <>
       <StatusBar backgroundColor="white" barStyle="dark-content" />
       <SafeAreaView>
-        <OrderList />
+        <OrderScreen />
       </SafeAreaView>
     </>
   );

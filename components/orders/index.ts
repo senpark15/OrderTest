@@ -1,3 +1,2 @@
-import OrderList from "./OrderListComponent";
 
-export * from './OrderListComponent';
+export * from './OrderItemComponent';

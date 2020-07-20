@@ -1,8 +1,9 @@
 import React, {FunctionComponent, useState} from 'react';
 import {StyleSheet, View, Text, Button, Alert} from 'react-native';
-import {OrderItemModel} from '../../models';
+import {OrderItemModel} from '@app/models';
 import {format} from 'date-fns';
 import Icon from 'react-native-vector-icons/Entypo';
+import {Colors} from '@app/themes';
 
 type OrderProps = {
   item: OrderItemModel;
@@ -19,14 +20,14 @@ export const OrderItem: FunctionComponent<OrderProps> = ({item}) => {
             <Icon
               name="minus"
               size={20}
-              color="#8c8c8c"
+              color={Colors.primaryColor}
               onPress={() => setIsExpand(!isExpand)}
             />
           ) : (
             <Icon
               name="plus"
               size={20}
-              color="#8c8c8c"
+              color={Colors.iconColor}
               onPress={() => setIsExpand(!isExpand)}
             />
           )}
@@ -48,33 +49,39 @@ export const OrderItem: FunctionComponent<OrderProps> = ({item}) => {
           </View>
         </View>
       </View>
-
-      <View style={styles.timeLine}>
-        <View>
-          <Text style={styles.circleActive}></Text>
-        </View>
-        <View>
-          <Text style={styles.circle}></Text>
-        </View>
-        <View>
-          <Text style={styles.circle}></Text>
-        </View>
-      </View>
-      <View style={styles.timeLineContainer}>
-        <View>
-          <Text
-            style={{...styles.timeLineLabel, ...styles.timeLineLabelActive,paddingLeft:15}}>
-            Placed
-          </Text>
-        </View>
-        <View>
-          <Text style={styles.timeLineLabel}>Out for delivery</Text>
-        </View>
-        <View>
-          <Text style={styles.timeLineLabel}>Delivered</Text>
-        </View>
-      </View>
-
+      {item.orderStatus === 'Open' && (
+        <>
+          <View style={styles.timeLine}>
+            <View>
+              <Text style={styles.circleActive}></Text>
+            </View>
+            <View>
+              <Text style={styles.circle}></Text>
+            </View>
+            <View>
+              <Text style={styles.circle}></Text>
+            </View>
+          </View>
+          <View style={styles.timeLineContainer}>
+            <View>
+              <Text
+                style={{
+                  ...styles.timeLineLabel,
+                  ...styles.timeLineLabelActive,
+                  paddingLeft: 15,
+                }}>
+                Placed
+              </Text>
+            </View>
+            <View>
+              <Text style={styles.timeLineLabel}>Out for delivery</Text>
+            </View>
+            <View>
+              <Text style={styles.timeLineLabel}>Delivered</Text>
+            </View>
+          </View>
+        </>
+      )}
       {isExpand && (
         <View style={styles.innerItem}>
           <View style={styles.divider}></View>
@@ -82,7 +89,9 @@ export const OrderItem: FunctionComponent<OrderProps> = ({item}) => {
             <Text style={styles.title}>Shipping Details</Text>
             <View style={styles.card}>
               <View style={styles.container}>
-                <Text style={styles.titleContent}>Jestin James</Text>
+                <Text style={{...styles.titleContent, ...styles.name}}>
+                  Jestin James
+                </Text>
                 <Text style={styles.addressType}>Home</Text>
               </View>
               <Text style={styles.label}>B2-204, Snn Raj Greenbay</Text>
@@ -114,13 +123,23 @@ export const OrderItem: FunctionComponent<OrderProps> = ({item}) => {
               </View>
               <View style={styles.divider}></View>
               <View style={styles.container}>
-                <Text style={styles.boggerTitleContent}>Grand Total</Text>
-                <Text style={styles.boggerTitleContent}>₹786</Text>
+                <Text style={styles.biggerTitleContent}>Grand Total</Text>
+                <Text style={styles.biggerTitleContent}>₹786</Text>
               </View>
             </View>
           </View>
-
-          <Button onPress={() => {}} title="Cancel Order" color="#e97162" />
+          {item.orderStatus === 'Open' ? (
+            <Button
+              onPress={() => {}}
+              title="Cancel Order"
+              color={Colors.primaryColor}
+            />
+          ) : (
+            <View style={{...styles.card, ...styles.help}}>
+              <Icon name="phone" size={20} color={Colors.primaryColor} />
+              <Text style={styles.helpText}>Need Help?</Text>
+            </View>
+          )}
         </View>
       )}
 
@@ -128,7 +147,7 @@ export const OrderItem: FunctionComponent<OrderProps> = ({item}) => {
 
       <View style={styles.container}>
         <View style={styles.icon}>
-          <Icon name="shop" size={20} color="#8c8c8c" />
+          <Icon name="shop" size={20} color={Colors.iconColor} />
         </View>
         <View style={styles.container}>
           <View>
@@ -150,7 +169,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 5,
-    shadowColor: '#000',
+    shadowColor: Colors.darkColor,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 5,
@@ -161,7 +180,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
-    shadowColor: '#000',
+    shadowColor: Colors.darkColor,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 5,
@@ -174,31 +193,35 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   title: {
-    color: '#8c8c8c',
-    fontWeight: 'bold',
+    color: Colors.lightColor,
+    fontSize: 13,
   },
   subTitle: {
-    color: '#a6a6a6',
-    fontSize: 12,
+    color: Colors.lightColor,
+    fontSize: 10,
   },
   titleContent: {
-    color: '#000',
+    color: Colors.darkColor,
     fontWeight: 'bold',
   },
-  boggerTitleContent: {
-    color: '#000',
+  biggerTitleContent: {
+    color: Colors.darkColor,
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 16,
   },
   label: {
-    color: '#80807d',
+    color: Colors.lightColor,
+    fontSize: 12,
+  },
+  name: {
+    fontSize: 14,
   },
   addressType: {
     fontWeight: 'bold',
-    backgroundColor: '#ffe1de',
-    color: '#e97162',
+    backgroundColor: '#FFEFDB',
+    color: Colors.primaryColor,
     borderWidth: 2,
-    borderColor: '#e97162',
+    borderColor: Colors.primaryColor,
     paddingLeft: 10,
     paddingRight: 5,
     paddingTop: 2,
@@ -216,42 +239,42 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    borderTopColor: '#e97162',
+    borderTopColor: Colors.primaryColor,
     borderTopWidth: 1,
     flexGrow: 1,
     marginTop: 16,
     marginBottom: 8,
   },
   timeLineLabel: {
-    color: '#80807d',
-    fontSize: 12,
+    color: Colors.lightColor,
+    fontSize: 10,
   },
   timeLineLabelActive: {
     fontWeight: 'bold',
-    color: '#000',
+    color: Colors.darkColor,
   },
   circleActive: {
     width: 12,
     height: 12,
-    backgroundColor: '#f7ada3',
+    backgroundColor: Colors.primaryColor,
     borderRadius: 15,
     position: 'absolute',
     top: -7,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: '#e97162',
+    borderColor: Colors.primaryColor,
     textAlign: 'center',
   },
   circle: {
     width: 10,
     height: 10,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.whiteColor,
     borderRadius: 15,
     position: 'absolute',
     top: -6,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: '#e97162',
+    borderColor: Colors.primaryColor,
     textAlign: 'center',
   },
   icon: {
@@ -259,9 +282,20 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   divider: {
-    borderBottomColor: '#c7c5c5',
+    borderBottomColor: Colors.dividerColor,
     borderBottomWidth: 1,
     marginHorizontal: -8,
     marginVertical: 10,
+  },
+  help: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  helpText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 20,
   },
 });

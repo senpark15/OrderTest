@@ -13,6 +13,7 @@
     "date-fns": "^2.14.0",
     "react": "16.13.1",
     "react-native": "0.63.0",
+    "react-native-dash": "^0.0.11",
     "react-native-navigation": "^6.9.1",
     "react-native-switch-selector": "^2.0.6",
     "react-native-vector-icons": "^7.0.0"
